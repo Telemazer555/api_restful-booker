@@ -1,0 +1,7 @@
+Faker
+pip
+pydantic
+pydantic_core
+pytest
+requests
+urllib3
