@@ -34,6 +34,19 @@ def booking_data():
         "additionalneeds": "Breakfast"
     }
 
+@pytest.fixture()
+def booking_data_hard():
+    return {
+        "firstname": "Артем",
+        "lastname": "Александрович",
+        "totalprice": 300,
+        "depositpaid": True,
+        "bookingdates": {
+            "checkin": "2025-01-010",
+            "checkout": "2025-01-015"
+        },
+        "additionalneeds": "Breakfast"
+    }
 
 @pytest.fixture
 def api_client(auth_session):
@@ -43,3 +56,4 @@ def api_client(auth_session):
 @pytest.fixture
 def item_scenarios(api_client):
     return ItemScenarios(api_client)
+# print(ы)

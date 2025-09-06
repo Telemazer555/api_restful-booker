@@ -117,6 +117,18 @@ class ItemScenarios:
         print(f"Item с ID {item_id} успешно обновлен.")
         return updated_item
 
+    def create_item_and_immediately_delete1(self, item_data):
+        """
+        Сценарий: создать item проверяет его на наличие в списке и удаляет.
+        Возвращает ID созданного и удаленного item.
+        """
+        created_item_data = self.api_client.create_item(item_data).json()
+        item_id = created_item_data.get("bookingid")
+        self.api_client.get_item(item_id)
+        print(
+            f"\n ID {item_id} успешно создан.\n ID {item_id} Успешно удалён. статус код: {self.api_client.delete_item(item_id).status_code}.")
+        return item_id
+
     def delete_existing_item_and_verify(self, item_id):  # test_item переименован в item_id для ясности
         """
         Сценарий: удалить существующий item и убедиться, что он удален.
