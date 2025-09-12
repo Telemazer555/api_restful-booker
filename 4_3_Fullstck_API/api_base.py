@@ -101,13 +101,14 @@ class ItemScenarios:
         """
         items = self.api_client.get_items().json()
         assert len(items) > 0, "Список items пуст"
-        print(f"Получено {len(items)} items.")
+        print(f"\nПолучено {len(items)} items.")
         return items
 
     def update_item_and_verify_changes(self, item_id, upd_item_data):
         """
         Сценарий: обновить item и проверить, что данные изменились.
         """
+
         updated_item = self.api_client.update_item(item_id, upd_item_data)
 
         assert updated_item["description"] == upd_item_data["description"], \
@@ -129,9 +130,21 @@ class ItemScenarios:
             f"\n ID {item_id} успешно создан.\n ID {item_id} Успешно удалён. статус код: {self.api_client.delete_item(item_id).status_code}.")
         return item_id
 
+    def update_item_and_verify_changes_and_delete(self, item_data, upd_item_data):
+        create_booking = self.api_client.create_item(item_data).json()
+        id = create_booking['bookingid']
+        firstname = create_booking['booking']['firstname']
+        lastname = create_booking['booking']['lastname']
+        up_booking_data = self.api_client.update_item(id, upd_item_data).json()
+        up_firstname = up_booking_data['firstname']
+        up_lastname = up_booking_data['lastname']
+        assert up_firstname != firstname, "Имя  совпадает"
+        assert up_lastname != lastname, "Фамилия  совпадает"
+        print(f"\nУспешно удалён item с ID:{id} и стаскодом {self.api_client.delete_item(id).status_code}")
+
     def delete_existing_item_and_verify(self, item_id):  # test_item переименован в item_id для ясности
         """
         Сценарий: удалить существующий item и убедиться, что он удален.
         """
         self.api_client.delete_item(item_id)
-        print(f"Item с ID {item_id} отправлен на удаление.")
+        print(f"\nItem с ID {item_id} отправлен на удаление.")

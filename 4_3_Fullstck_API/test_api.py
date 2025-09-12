@@ -61,10 +61,10 @@ class TestBookingScenarios:
     def test_create_item_and_delete1(self,item_scenarios,booking_data):  # Готово!
         item_scenarios.create_item_and_immediately_delete(item_data=booking_data)
 
-    def test_update_and_get_and_delete(self,item_scenarios, api_client, booking_data, booking_data_hard): # Почти говтово
-        create_booking = api_client.create_item(booking_data).json()
-        id = create_booking['bookingid']
-        api_client.update_item(id, upd_item_data=booking_data_hard)
-        print(id)
-        print(f"Успешно удалён item с ID: {api_client.delete_item(id).status_code}")
+    def test_update_and_get_and_delete(self, item_scenarios, booking_data, booking_data_hard): # Готово!
+        item_scenarios.update_item_and_verify_changes_and_delete(item_data=booking_data,upd_item_data=booking_data_hard)
 
+    def test_update(self,item_scenarios, api_client, booking_data, booking_data_hard): # Почти говтово
+        crate_booking = api_client.create_item(booking_data).json()
+        id = crate_booking['bookingid']
+        item_scenarios.update_item_and_verify_changes(id,upd_item_data=booking_data)
