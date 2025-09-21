@@ -56,4 +56,3 @@ def api_client(auth_session):
 @pytest.fixture
 def item_scenarios(api_client):
     return ItemScenarios(api_client)
-# print(ы)

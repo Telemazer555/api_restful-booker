@@ -1,7 +1,6 @@
-Faker
-pip
-pydantic
-pydantic_core
-pytest
-requests
-urllib3
+pytest>=8.4.0
+pydantic>=2.11.7
+requests>=2.32.4
+Faker>=37.4.0
+dotenv>=0.9.9
+python-dotenv>=1.1.1
