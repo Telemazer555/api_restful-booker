@@ -17,11 +17,24 @@ class BookingDates(BaseModel):
     checkout: str
 
 
-class UserSchema(BaseModel):
+class BaseBookingSchema(BaseModel):
     firstname: str
     lastname: str
     totalprice: int
     depositpaid: bool
     bookingdates: dict
+    bookingdates: BookingDates
+    additionalneeds: Optional[str] = None
+
+class UserSchema2(BaseModel):
+    bookingid: int
+    booking: BaseBookingSchema
+
+
+class UpdateBookingSchema(BaseBookingSchema):
+    firstname: str
+    lastname: str
+    totalprice: int
+    depositpaid: bool
     bookingdates: BookingDates
     additionalneeds: Optional[str] = None

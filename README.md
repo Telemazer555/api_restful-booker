@@ -1,5 +1,5 @@
 ### Скачиваем репозиторий 
-```bash
+```
 git clone https://github.com/Telemazer555/api_restful-booker
 ```
 ### Устанавливаем библиотеки

@@ -3,6 +3,7 @@ from pydantic import BaseModel, ValidationError
 from requests import Response
 from typing import Type
 from const_data import BASE_URL
+from const_data import UserSchema2, UpdateBookingSchema
 
 
 class ItemApiClient:
@@ -86,11 +87,13 @@ class ItemScenarios:
 
     def create_item_and_immediately_delete(self, item_data):
         """
-        Сценарий: создать item и сразу же его удалить.
+        Сценарий: создать item, проверить его ответ через валидатор и сразу же его удалить.
         Возвращает ID созданного и удаленного item.
         """
-        created_item_data = self.api_client.create_item(item_data).json()
-        item_id = created_item_data.get("bookingid")
+        created_item_data = self.api_client.create_item(item_data)
+        self.api_client.validate_response(created_item_data, expected_data=created_item_data.json(), model=UserSchema2)
+        item_id = created_item_data.json().get("bookingid")
+        self.api_client.get_item(item_id)
         print(
             f"\n ID {item_id} успешно создан.\n ID {item_id} Успешно удалён. статус код: {self.api_client.delete_item(item_id).status_code}.")
         return item_id
@@ -104,47 +107,22 @@ class ItemScenarios:
         print(f"\nПолучено {len(items)} items.")
         return items
 
-    def update_item_and_verify_changes(self, item_id, upd_item_data):
-        """
-        Сценарий: обновить item и проверить, что данные изменились.
-        """
-
-        updated_item = self.api_client.update_item(item_id, upd_item_data)
-
-        assert updated_item["description"] == upd_item_data["description"], \
-            f"Описание не обновилось. Ожидалось: {upd_item_data['description']}, получено: {updated_item['description']}"
-        assert updated_item["title"] == upd_item_data["title"], \
-            f"Заголовок не обновился. Ожидалось: {upd_item_data['title']}, получено: {updated_item['title']}"
-        print(f"Item с ID {item_id} успешно обновлен.")
-        return updated_item
-
-    def create_item_and_immediately_delete1(self, item_data):
-        """
-        Сценарий: создать item проверяет его на наличие в списке и удаляет.
-        Возвращает ID созданного и удаленного item.
-        """
-        created_item_data = self.api_client.create_item(item_data).json()
-        item_id = created_item_data.get("bookingid")
-        self.api_client.get_item(item_id)
-        print(
-            f"\n ID {item_id} успешно создан.\n ID {item_id} Успешно удалён. статус код: {self.api_client.delete_item(item_id).status_code}.")
-        return item_id
-
     def update_item_and_verify_changes_and_delete(self, item_data, upd_item_data):
-        create_booking = self.api_client.create_item(item_data).json()
-        id = create_booking['bookingid']
-        firstname = create_booking['booking']['firstname']
-        lastname = create_booking['booking']['lastname']
-        up_booking_data = self.api_client.update_item(id, upd_item_data).json()
-        up_firstname = up_booking_data['firstname']
-        up_lastname = up_booking_data['lastname']
+        create_booking = self.api_client.create_item(item_data)
+        self.api_client.validate_response(create_booking, expected_data=create_booking.json(), model=UserSchema2)
+
+        id = create_booking.json()['bookingid']
+        firstname = create_booking.json()['booking']['firstname']
+        lastname = create_booking.json()['booking']['lastname']
+
+        up_booking_data = self.api_client.update_item(id, upd_item_data)
+        self.api_client.validate_response(up_booking_data, expected_data=up_booking_data.json(),
+                                          model=UpdateBookingSchema)
+
+        up_firstname = up_booking_data.json()['firstname']
+        up_lastname = up_booking_data.json()['lastname']
+
         assert up_firstname != firstname, "Имя  совпадает"
         assert up_lastname != lastname, "Фамилия  совпадает"
-        print(f"\nУспешно удалён item с ID:{id} и стаскодом {self.api_client.delete_item(id).status_code}")
 
-    def delete_existing_item_and_verify(self, item_id):  # test_item переименован в item_id для ясности
-        """
-        Сценарий: удалить существующий item и убедиться, что он удален.
-        """
-        self.api_client.delete_item(item_id)
-        print(f"\nItem с ID {item_id} отправлен на удаление.")
+        print(f"\nУспешно удалён item с ID:{id} и стаскодом {self.api_client.delete_item(id).status_code}")
