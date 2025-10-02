@@ -1,8 +1,9 @@
-import requests
-from faker.proxy import Faker
-from api_base import ItemApiClient, ItemScenarios
-from const_data import HEADERS, BASE_URL, JSON_BODY
 import pytest
+import requests
+from faker import Faker
+from src.API import ItemApiClient
+from src.data_models import BASE_URL, JSON_BODY, HEADERS
+from src.scenarios import ItemScenarios
 
 fake = Faker()
 

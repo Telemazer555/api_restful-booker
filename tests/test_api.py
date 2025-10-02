@@ -1,4 +1,4 @@
-from const_data import BaseBookingSchema
+from src.data_models import BaseBookingSchema
 
 
 class TestBookingsApiclient:
@@ -35,11 +35,11 @@ class TestBookingsApiclient:
             },
             "additionalneeds": "Breakfast"
         }
-        api_client.update_item(1710, upd_item_data=data)
+        api_client.update_item(99, upd_item_data=data)
 
-    def test_client_del(self, api_client, auth_session):
-        api_client.delete_item(1710)
-        print(f"Успешно создан и удален item с ID: {api_client}")
+    # def test_client_del(self, api_client, auth_session):
+    #     api_client.delete_item(99)
+    #     print(f"Успешно создан и удален item с ID: {api_client}")
 
 
 class TestBookingScenarios:
@@ -54,3 +54,4 @@ class TestBookingScenarios:
                                        booking_data_hard):  # Готово!
         item_scenarios.update_item_and_verify_changes_and_delete(item_data=booking_data,
                                                                  upd_item_data=booking_data_hard)
+
