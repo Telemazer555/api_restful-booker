@@ -1,3 +1,7 @@
+### Создание виртуального окружения
+```
+python3 -m venv venv
+```
 ### Скачиваем репозиторий 
 ```
 git clone https://github.com/Telemazer555/api_restful-booker
