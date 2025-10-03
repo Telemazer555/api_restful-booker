@@ -1,0 +1,10 @@
+[project]
+name = "api-restful-booker"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "faker>=37.8.0",
+    "pytest>=8.4.2",
+    "requests>=2.32.5",
+]
