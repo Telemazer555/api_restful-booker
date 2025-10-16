@@ -80,6 +80,8 @@
 
 git clone <this-repo>
 cd <project-folder>
+pip install uv
+
 ...
 ```
 
