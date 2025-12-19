@@ -41,12 +41,33 @@ git clone <this-repo>
 pip install uv
 ``` 
 
+``` bash
+
+Если устарел pip
+pip install --upgrade pip
+``` 
+
 Установка всех зависимостей
 
 ``` bash
 
 uv sync
 ```
+## ⚙️ Конфигурация
+
+### Переменные окружения
+
+Создайте `.env` файл в корне проекта:
+
+```
+
+BASE_URL = https://api.example.com
+API_KEY = your-api-key
+JSON_BODY = your-json_body
+```
+
+> Используйте [dotenv](https://pypi.org/project/python-dotenv/) для загрузки переменных.
+
 
 ## 🚀 Запуск тестов +
 
@@ -65,20 +86,6 @@ pytest tests/test_api.py::TestBookingScenarios::test_get_and_verify
 
 ```
 
-## ⚙️ Конфигурация
-
-### Переменные окружения
-
-Создайте `.env` файл в корне проекта:
-
-```
-
-BASE_URL = https://api.example.com
-API_KEY = your-api-key
-JSON_BODY = your-json_body
-```
-
-> Используйте [dotenv](https://pypi.org/project/python-dotenv/) для загрузки переменных.
 
 ## 🔗 Зависимости
 
